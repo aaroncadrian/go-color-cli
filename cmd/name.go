@@ -54,7 +54,7 @@ func hexToName(args []string) {
 	hexMap, err := utils.GetColorNameMap()
 
 	if err != nil {
-		fmt.Printf("Error while reading color names file %v", err)
+		fmt.Printf("Error while retrieving color names: %v", err)
 	}
 
 	hex := args[0]
