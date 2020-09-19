@@ -16,6 +16,7 @@ limitations under the License.
 package cmd
 
 import (
+	"colorcli/utils"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -31,14 +32,26 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Args: cobra.ExactArgs(2),
-	Run: func(cmd *cobra.Command, args []string) {
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 2 {
+			return cobra.ExactArgs(2)(cmd, args)
+		}
+
+		if !utils.IsValidHexCode(args[1]) {
+			return fmt.Errorf(`"%v" is not a valid hex code`, args[1])
+		}
+
+		return nil
+	},
+	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
 		hexCode := args[1]
 
 		fmt.Printf("Adding %v as %v\n", name, hexCode)
 
 		fmt.Println("add called")
+
+		return nil
 	},
 }
 
@@ -55,3 +68,7 @@ func init() {
 	// is called directly, e.g.:
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
+
+//func addToFile(name string, hexCode string) error {
+//
+//}
