@@ -31,8 +31,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		hexToName(args)
+	RunE: func(cmd *cobra.Command, args []string) error {
+		return hexToName(args)
 	},
 }
 
@@ -50,11 +50,11 @@ func init() {
 	// nameCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func hexToName(args []string) {
+func hexToName(args []string) error {
 	hexMap, err := utils.GetColorNameMap()
 
 	if err != nil {
-		fmt.Printf("Error while retrieving color names: %v", err)
+		return fmt.Errorf("error while retrieving color names: %v", err)
 	}
 
 	hex := args[0]
@@ -66,4 +66,6 @@ func hexToName(args []string) {
 	} else {
 		fmt.Printf("Color name not found")
 	}
+
+	return nil
 }
