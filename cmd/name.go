@@ -16,10 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"encoding/json"
+	"colorcli/utils"
 	"fmt"
-	"io/ioutil"
-
 	"github.com/spf13/cobra"
 )
 
@@ -53,16 +51,11 @@ func init() {
 }
 
 func hexToName(args []string) {
-	var hexMap map[string]string
-
-	// read color names
-	fileBytes, err := ioutil.ReadFile("colornames.min.json")
+	hexMap, err := utils.GetColorNameMap()
 
 	if err != nil {
 		fmt.Printf("Error while reading color names file %v", err)
 	}
-
-	_ = json.Unmarshal(fileBytes, &hexMap)
 
 	hex := args[0]
 
