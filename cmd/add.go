@@ -18,6 +18,7 @@ package cmd
 import (
 	"colorcli/utils"
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -45,13 +46,15 @@ to quickly create a Cobra application.`,
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
-		hexCode := args[1]
+		rawHexCode := strings.TrimSpace(args[1])
 
-		fmt.Printf("Adding %v as %v\n", name, hexCode)
+		hexCode, ok := utils.ParseHexCode(rawHexCode)
 
-		fmt.Println("add called")
+		if !ok {
+			return fmt.Errorf(`cannot parse hex code from "%v"`, rawHexCode)
+		}
 
-		return nil
+		return addToFile(name, hexCode)
 	},
 }
 
@@ -69,6 +72,14 @@ func init() {
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-//func addToFile(name string, hexCode string) error {
-//
-//}
+func addToFile(name string, hexCode string) error {
+	err := utils.AddColorToFile(name, hexCode)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Added %v as %v", hexCode, name)
+
+	return nil
+}

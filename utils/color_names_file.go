@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 )
 
 const filename = "colornames.min.json"
@@ -20,4 +21,22 @@ func GetColorNameMap() (map[string]string, error) {
 	_ = json.Unmarshal(fileBytes, &hexMap)
 
 	return hexMap, nil
+}
+
+func AddColorToFile(name string, hexCode string) error {
+	hexMap, err := GetColorNameMap()
+
+	if err != nil {
+		return err
+	}
+
+	hexMap[hexCode] = name
+
+	fileBytes, err := json.Marshal(hexMap)
+
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(filename, fileBytes, os.ModePerm)
 }
