@@ -16,7 +16,9 @@ limitations under the License.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 
 	"github.com/spf13/cobra"
 )
@@ -48,4 +50,27 @@ func init() {
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
 	// nameCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}
+
+func hexToName(args []string) {
+	var hexMap map[string]string
+
+	// read color names
+	fileBytes, err := ioutil.ReadFile("colornames.json")
+
+	if err != nil {
+		fmt.Printf("Error while reading color names file %v", err)
+	}
+
+	_ = json.Unmarshal(fileBytes, &hexMap)
+
+	hex := args[0]
+
+	name, ok := hexMap[hex]
+
+	if ok {
+		fmt.Printf("Name: %s, Hex: %s\n", name, hex)
+	} else {
+		fmt.Printf("Color name not found")
+	}
 }
