@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 const filename = "colornames.min.json"
@@ -30,7 +31,9 @@ func AddColorToFile(name string, hexCode string) error {
 		return err
 	}
 
-	hexMap[hexCode] = name
+	lowerHexCode := strings.ToLower(hexCode)
+
+	hexMap[lowerHexCode] = name
 
 	fileBytes, err := json.Marshal(hexMap)
 
