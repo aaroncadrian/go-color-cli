@@ -56,7 +56,7 @@ func hexToName(args []string) {
 	var hexMap map[string]string
 
 	// read color names
-	fileBytes, err := ioutil.ReadFile("colornames.json")
+	fileBytes, err := ioutil.ReadFile("colornames.min.json")
 
 	if err != nil {
 		fmt.Printf("Error while reading color names file %v", err)
